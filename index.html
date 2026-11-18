@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="description"
+        content="Shrike is a desktop Bitcoin wallet following Bitcoin's change of proof-of-work algorithm to BLAKE2b, signing with SIGHASH_UNIFIED so transactions cannot be replayed.">
+    <title>Shrike Bitcoin Wallet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="nav">
+        <div class="wrap nav-in">
+            <a class="brand" href="index.html"><img class="logo" src="img/shrikelogo.png">Shrike</a>
+            <nav class="links" aria-label="Main">
+                <a href="features.html" data-nav="features">Features</a>
+                <a href="download.html" data-nav="download">Download</a>
+                <a href="docs.html" data-nav="docs">Docs</a>
+                <a href="donate.html" data-nav="donate">Donate</a>
+                <a href="https://github.com/privkeyio/shrike" target="_blank" rel="noopener">Source</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+
+        <section class="hero">
+            <div class="wrap hero-in">
+                <div>
+                    <h1>Shrike Bitcoin Wallet</h1>
+                    <p class="lead">A full desktop Bitcoin wallet: hardware wallets, PSBT, multisig and airgapped
+                        signing, connecting to your own node. Shrike follows Bitcoin's change of proof-of-work algorithm
+                        to <strong>BLAKE2b</strong>.</p>
+                    <p class="lead">It signs with <code>SIGHASH_UNIFIED</code>, so the transactions it builds cannot be
+                        replayed onto the SHA256d chain.</p>
+                    <div class="btns"><a class="btn" href="download.html">Download</a><a class="btn alt"
+                            href="download.html">Replay protection</a></div>
+                </div>
+                <img class="hero-img" src="img/shrikehero.png" alt="Shrike">
+            </div>
+        </section>
+
+        <section class="sec" id="what-it-does">
+            <div class="wrap">
+                <h2>What it does</h2>
+                <p class="sub">Shrike builds on Sparrow, so the wallet itself is a mature one.</p>
+                <ul class="list">
+                    <li>Single signature and multisig wallets across the common script types</li>
+                    <li>Hardware wallets over USB and in airgapped modes</li>
+                    <li>Full PSBT import and export, and a transaction editor that shows the bytes before you broadcast
+                    </li>
+                    <li>Replay protection marked per keystore, with the send screen reporting what each transaction
+                        actually got</li>
+                    <li>Connects to your own node: Bitcoin Knots directly, or your own Electrum server indexing one</li>
+                    <li>Tor built in, and fee rates, broadcast and explorer links pointed only at services that kept up
+                    </li>
+                    <li>Installs alongside an existing Sparrow without sharing wallets, settings or state</li>
+                    <li>Reproducible release binaries, with the proof of work and the signature hash checked against a
+                        live forked regtest node</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="sec" id="what-shrike-changes">
+            <div class="wrap">
+                <h2>What Shrike changes</h2>
+                <p class="sub" style="max-width:700px">Everything not listed here is Sparrow: the same wallet model, the
+                    same hardware wallet support, the same PSBT workflow.</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>BLAKE2b proof of work</h3>
+                        <p>Validates the 164 byte v2 block header and takes the BLAKE2b hash as the block id past
+                            activation. The work itself lives in the <a href="https://github.com/privkeyio/drongo"
+                                target="_blank" rel="noopener">drongo</a> submodule.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Unified opt-in signature hash</h3>
+                        <p>Past activation, signs with <code>SIGHASH_UNIFIED</code>: the <code>0x20</code> flag set on
+                            the base hash type, <code>0x21</code> by default. The pre-fork rules reject that hash type,
+                            which is what the protection rests on.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Per-keystore opt-in</h3>
+                        <p>Nothing a hardware device or watch-only keystore reports tells the wallet what firmware will
+                            sign for it, so you mark each one by hand. One marked signer in a quorum is enough. The
+                            device side lives in the <a href="https://github.com/privkeyio/lark" target="_blank"
+                                rel="noopener">lark</a> submodule.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Only services that kept up</h3>
+                        <p>Fee rates, explorer links and broadcast go to <a href="https://mempool.guide" target="_blank"
+                                rel="noopener">mempool.guide</a>. The preconfigured public Electrum servers are gone,
+                            because they stopped at the activation height.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Separate application identity</h3>
+                        <p>Installs alongside an existing Sparrow without sharing state: its own <code>~/.shrike</code>
+                            folder, packages, desktop entries, MIME types and macOS bundle identifier.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Verified end to end</h3>
+                        <p>The proof of work and the signature hash are both checked against a live forked regtest node,
+                            not just unit tested. The release binaries are reproducible.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="sec" id="activation">
+            <div class="wrap">
+                <h2>Activation</h2>
+                <p class="sub">Past these heights, Shrike validates BLAKE2b work and opts in when it signs.</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Network</th>
+                                <th>Height</th>
+                                <th>Activated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>mainnet</td>
+                                <td><code>961,640</code></td>
+                                <td>30 August 2026</td>
+                            </tr>
+                            <tr>
+                                <td>testnet4</td>
+                                <td><code>150,308</code></td>
+                                <td>30 August 2026</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>Below these heights nothing changes: the same chain, the same coins, the same history. Past them,
+                    blocks carry BLAKE2b work and signatures opt in.</p>
+                <p style="margin:0">The compiled-in height is cross checked against the connected node wherever the node
+                    reports one. If the two disagree, Shrike declines to opt in rather than picking a side. Only Knots
+                    reports the height, through <code>getdeploymentinfo</code>; behind anything else the wallet still
+                    opts in and tells you the height went unchecked.</p>
+            </div>
+        </section>
+
+        <section class="sec" id="send-screen">
+            <div class="wrap">
+                <h2>Check the send screen</h2>
+                <p class="sub" style="max-width:710px">A signature that does not opt in is valid under both rule sets.
+                    Where the coins it spends also exist on the SHA256d chain, that makes the transaction replayable
+                    there. Shrike selects the opt-in by default and says plainly what each transaction got.</p>
+                <!-- IMAGE PLACEHOLDER: swap this block for <img src="assets/send-replay-protected.png" alt="The send screen reporting a transaction as replay protected"> -->
+                <div class="shot" role="img" aria-label="The send screen reporting a transaction as replay protected">
+                    <div class="t">Signatures</div>
+                    <div class="r"><span>Signing Wallet:</span><span class="sel" style="color:#e3e5e8">testing <i
+                                class="ri-arrow-down-s-fill"></i></span></div>
+                    <div class="r right"><span>Sighash:</span><span class="sel" style="color:#e3e5e8">All + Unified
+                            (Recommended) <i class="ri-arrow-down-s-fill"></i></span></div>
+                    <div class="r"><span>Protection:</span><span><i class="ri-checkbox-circle-fill ok"></i> Replay
+                            protected</span></div>
+                </div>
+                <p class="caption">Where the status reads otherwise, hovering it names what is refusing and what to do
+                    about it.</p>
+                <p><strong style="font-weight:600">Anyone Can Pay is the exception.</strong> It commits only to its own
+                    input and the outputs, so that input can be lifted out and spent on the SHA256d chain even though
+                    the whole transaction cannot. Shrike names such signatures and never selects that mode on its own.
+                </p>
+                <p style="margin:0"><a href="docs/replay-protection.html">Read the full replay protection guide
+                        &rarr;</a></p>
+            </div>
+        </section>
+
+        <section class="sec" id="get-started">
+            <div class="wrap">
+                <h2>Get started</h2>
+                <div class="grid" style="margin-top:30px">
+                    <a class="card" href="docs/quick-start.html">
+                        <h3>Quick start</h3>
+                        <p>The whole path: get a node running, connect it, mark your signers, check the send screen.</p>
+                    </a>
+                    <a class="card" href="download.html">
+                        <h3>Download</h3>
+                        <p>Packages for Linux, macOS and Windows, with a signed <code>SHA256SUMS</code> covering every
+                            file.</p>
+                    </a>
+                    <a class="card" href="docs/connect-node.html">
+                        <h3>Connect a node</h3>
+                        <p>Point Shrike at Bitcoin Knots v29.4.1.knots20260508 or later, or your own Electrum server
+                            indexing one.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="wrap foot">
+            <p>Shrike has not been audited and comes with no warranty of any kind. It is an unofficial fork of Sparrow
+                Bitcoin Wallet, licensed under the Apache 2.0 license, and is not affiliated with or endorsed by the
+                Sparrow project.</p>
+            <nav aria-label="Footer"><a href="https://github.com/privkeyio/shrike" target="_blank"
+                    rel="noopener">GitHub</a><a href="https://github.com/privkeyio/shrike/releases/latest"
+                    target="_blank" rel="noopener">Releases</a><a href="https://github.com/privkeyio/shrike/issues"
+                    target="_blank" rel="noopener">Issues</a><a href="docs.html">Docs</a></nav>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+
+</html>

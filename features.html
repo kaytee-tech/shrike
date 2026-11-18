@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="How Shrike differs from upstream: BLAKE2b proof of work, SIGHASH_UNIFIED signing, per-keystore opt-in, and a separate application identity.">
+<title>What Shrike changes: BLAKE2b and SIGHASH_UNIFIED | Shrike</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+<a class="brand" href="index.html"><span class="logo"><!-- LOGO PLACEHOLDER: replace with <img src="assets/shrike-plate.png" alt=""> --><i class="ri-bird-fill"></i></span>Shrike</a>
+<nav class="links" aria-label="Main">
+<a href="features.html" data-nav="features">Features</a>
+<a href="download.html" data-nav="download">Download</a>
+<a href="docs.html" data-nav="docs">Docs</a>
+<a href="donate.html" data-nav="donate">Donate</a>
+<a href="https://github.com/privkeyio/shrike" target="_blank" rel="noopener">Source</a>
+</nav></div></header>
+<main>
+
+<div class="page narrow"><div class="wrap"><div class="in">
+<span class="eyebrow">Features</span>
+<h1>What Shrike changes</h1>
+<p>Shrike is Sparrow with the changes below carried on top. Anything not listed here behaves as upstream does, and upstream's documentation applies to it.</p>
+<p>All of it concerns one thing: the BLAKE2b hardfork is an upgrade to Bitcoin's proof of work, applied to the existing chain at a set height. It is not a new chain, and it does not create a separate coin. Shrike is a Bitcoin wallet holding Bitcoin, and the balances and history in it are the ones that were always there.</p>
+
+<h2 id="blake2b-proof-of-work">BLAKE2b proof of work</h2>
+<p>Past the activation height, Shrike validates the 164 byte v2 block header and takes its BLAKE2b hash as the block id. Before activation it validates the old header and the old hash, so one wallet syncs the whole chain from genesis across the boundary without a break. The implementation lives in the <a href="https://github.com/privkeyio/drongo" target="_blank" rel="noopener">drongo</a> submodule, which is why the clone has to be recursive.</p>
+<p>The fork itself is not this project's work. <a href="https://bitcoin-blake2b.org" target="_blank" rel="noopener">bitcoin-blake2b.org</a> explains what changed and why, Bitcoin Knots covers it at <a href="https://bitcoinknots.org/learn/2026-blake2b" target="_blank" rel="noopener">bitcoinknots.org/learn</a>, and the consensus change is specified in the <a href="https://github.com/bitcoinknots/bitcoin/blob/v29.4.1.knots20260508/doc/release-notes.md#attack-mitigation" target="_blank" rel="noopener">release notes</a>. Shrike is a wallet that follows it.</p>
+
+<h2 id="unified-opt-in-signature-hash">Unified opt-in signature hash</h2>
+<p>Past activation, Shrike signs with <code>SIGHASH_UNIFIED</code>. It is a flag, <code>0x20</code>, set on whatever base hash type the signature already uses: <code>0x21</code> for the default All, <code>0x22</code> for None, <code>0x23</code> for Single, and <code>0xA1</code> to <code>0xA3</code> for the Anyone Can Pay combinations. Under the pre-fork rules none of those are valid, so a signature carrying the flag cannot be replayed onto the SHA256d chain. This is the whole mechanism: the protection comes from the pre-fork rules rejecting the signature, not from anything the wallet asks the network to enforce.</p>
+<p>Opting in does more than change the message. The new hash commits to the amount every input spends, and that is what the change is actually for: it closes CVE-2013-2292 and CVE-2020-14199 for the inputs that opt in. Sign the legacy way and a hardware wallet is shown the amounts by the computer it is plugged into rather than committing to them itself, which is how a signer can be talked into paying a fee it never agreed to.</p>
+<p>Replay resistance follows from that. Because the message is different, the pre-fork rules reject the signature, so a transaction carrying it cannot be replayed. It is a consequence of the new hash rather than the reason for it.</p>
+<p>Where Shrike cannot opt in, it signs the legacy way and says so on the send screen rather than failing or pretending.</p>
+
+<h2 id="per-keystore-opt-in">Per-keystore opt-in</h2>
+<p>Nothing a hardware device reports identifies the firmware that will sign for it, and a watch-only keystore reports nothing about signing at all. So the opt-in is not detected, it is declared: each keystore is marked by hand under <strong style="font-weight:600">Replay protection</strong> in the wallet's keystore settings, and stays off until its owner says otherwise. A keystore holding its own key needs no mark.</p>
+<!-- IMAGE PLACEHOLDER: keystore-replay-protection.png -->
+<div class="fig"><div class="ph" role="img" aria-label="Keystore tab screenshot placeholder"><i class="ri-image-line"></i></div></div>
+<p class="caption">The mark is what its owner knows about the device, not what the device claims.</p>
+<p>In a multisig quorum, one marked signer is enough. Unmarked signers still sign: each is handed the hash type it can actually produce. Mark two of a 2-of-3 and every transaction opts in; mark one and it depends on that signer taking part, which the wallet reports per transaction rather than promising in advance.</p>
+
+<h2 id="only-services-still-on-the-chain">Only services still on the chain</h2>
+<p>A fee estimate drawn from a mempool you are not broadcasting into prices the transaction wrongly, and an explorer that stopped at the activation height shows a history that ends there. Fee rates, explorer links and broadcast all go to <a href="https://mempool.guide" target="_blank" rel="noopener">mempool.guide</a>, over Tor where a proxy is configured. The public Electrum servers Sparrow ships with are removed, because they stopped at the activation height. Connect a Bitcoin Knots node at <a href="https://github.com/bitcoinknots/bitcoin/releases/tag/v29.4.1.knots20260508" target="_blank" rel="noopener">v29.4.1.knots20260508</a> or later, or your own Electrum server indexing one.</p>
+
+<h2 id="separate-application-identity">Separate application identity</h2>
+<p>Shrike installs and runs alongside an existing Sparrow without touching its state. It has its own home folder (<code>~/.shrike</code>), its own packages and desktop entries, its own MIME type registrations and its own macOS bundle identifier. Wallets are not shared between the two, and neither installation can overwrite the other.</p>
+
+<h2 id="inherited-from-sparrow">Inherited from Sparrow</h2>
+<p>The wallet model, the transaction editor, hardware wallet support, PSBT import and export, the airgapped workflows, Tor support and the server settings are all upstream's work, unchanged except where the items above required it. Shrike tracks upstream and carries these changes on top.</p>
+<p>For problems specific to Shrike, use the <a href="https://github.com/privkeyio/shrike/issues" target="_blank" rel="noopener">issue tracker here</a>. Anything else belongs <a href="https://github.com/sparrowwallet/sparrow/issues" target="_blank" rel="noopener">upstream</a>.</p>
+</div></div></div>
+</main>
+<footer><div class="wrap foot">
+<p>Shrike has not been audited and comes with no warranty of any kind. It is an unofficial fork of Sparrow Bitcoin Wallet, licensed under the Apache 2.0 license, and is not affiliated with or endorsed by the Sparrow project.</p>
+<nav aria-label="Footer"><a href="https://github.com/privkeyio/shrike" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/privkeyio/shrike/releases/latest" target="_blank" rel="noopener">Releases</a><a href="https://github.com/privkeyio/shrike/issues" target="_blank" rel="noopener">Issues</a><a href="docs.html">Docs</a></nav>
+</div></footer>
+<script src="main.js"></script>
+</body>
+</html>

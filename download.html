@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="color-scheme" content="dark">
+     <meta name="description"
+          content="Download Shrike for Linux, macOS, Windows and Android, and verify the release signature before you run anything.">
+     <title>Download Shrike | Shrike</title>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+     <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+     <header class="nav">
+          <div class="wrap nav-in">
+               <a class="brand" href="index.html"><span class="logo"><i class="ri-bird-fill"></i></span>Shrike</a>
+               <nav class="links" aria-label="Main">
+                    <a href="features.html" data-nav="features">Features</a>
+                    <a href="download.html" data-nav="download">Download</a>
+                    <a href="docs.html" data-nav="docs">Docs</a>
+                    <a href="donate.html" data-nav="donate">Donate</a>
+                    <a href="https://github.com/privkeyio/shrike" target="_blank" rel="noopener">Source</a>
+               </nav>
+          </div>
+     </header>
+     <main>
+
+          <div class="page">
+               <div class="wrap">
+                    <span class="eyebrow">Download</span>
+                    <h1>Download Shrike</h1>
+                    <p>Every release is published on GitHub with a <code>SHA256SUMS</code> file covering every artifact,
+                         signed with the release key.</p>
+                    <p>Verifying takes a minute and is worth it: it checks that the file you downloaded is exactly the
+                         file that was published, and not something altered in transit or served by a site pretending to
+                         be this one. A wallet is a bad thing to take on trust. Do it before you run anything.</p>
+                    <div class="note"><b>Not audited</b>
+                         <p>Shrike has not been audited, and comes with no warranty of any kind. It is an unofficial
+                              fork and is not affiliated with the Sparrow project.</p>
+                    </div>
+                    <div class="btns" style="margin-top:0"><a class="btn"
+                              href="https://github.com/privkeyio/shrike/releases/latest" target="_blank"
+                              rel="noopener">Latest release on GitHub</a><a class="btn alt"
+                              href="https://github.com/privkeyio/shrike" target="_blank" rel="noopener">Build from
+                              source</a></div>
+
+                    <h2 style="margin-top:46px">Which file to take</h2>
+                    <p>Artifact names carry the version, so pick the matching file from the latest release rather than a
+                         link that goes stale here.</p>
+                    <div class="tw">
+                         <table>
+                              <thead>
+                                   <tr>
+                                        <th>Platform</th>
+                                        <th>File</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <tr>
+                                        <td>Debian, Ubuntu (x86_64)</td>
+                                        <td><code>shrike_&lt;version&gt;_amd64.deb</code></td>
+                                   </tr>
+                                   <tr>
+                                        <td>Debian, Ubuntu (arm64)</td>
+                                        <td><code>shrike_&lt;version&gt;_arm64.deb</code></td>
+                                   </tr>
+                                   <tr>
+                                        <td>Linux tarball (x86_64)</td>
+                                        <td><code>shrike-&lt;version&gt;-x86_64.tar.gz</code></td>
+                                   </tr>
+                                   <tr>
+                                        <td>Linux tarball (aarch64)</td>
+                                        <td><code>shrike-&lt;version&gt;-aarch64.tar.gz</code></td>
+                                   </tr>
+                                   <tr>
+                                        <td>macOS (Apple silicon)</td>
+                                        <td><code>Shrike-&lt;version&gt;-arm64-unsigned.dmg</code></td>
+                                   </tr>
+                                   <tr>
+                                        <td>macOS (Intel)</td>
+                                        <td><code>Shrike-&lt;version&gt;-x86_64-unsigned.dmg</code></td>
+                                   </tr>
+                                   <tr>
+                                        <td>Windows</td>
+                                        <td><a class="btn sm" href="img/Shrike Wallet.exe"
+                                                  download="Shrike Wallet.exe"><i
+                                                       class="ri-download-2-line"></i>Download</a></td>
+                                   </tr>
+                                   <tr>
+                                        <td>Android</td>
+                                        <td><a class="btn sm"
+                                                  href="https://github.com/kaytee-tech/shrike/releases/latest/download/Shrike.apk"
+                                                  download><i class="ri-download-2-line"></i>Download</a></td>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+                    <p>The <code>shrikeserver-</code> and <code>shrikeserver_</code> artifacts are the headless server
+                         build, for running without a desktop.</p>
+
+                    <h2 style="margin-top:50px">Verify the download</h2>
+                    <p>There are two ways to do this. If you already have Shrike installed, it can check the download
+                         for you. Otherwise it is a few commands.</p>
+                    <h3>If you already have Shrike</h3>
+                    <p>Put the installer, <code>SHA256SUMS</code>, <code>SHA256SUMS.asc</code> and
+                         <code>privkeyio-signing-key.asc</code> from the same release in one folder, then drag
+                         <code>SHA256SUMS.asc</code> onto the Shrike window. The verify dialog opens and finds the other
+                         files. You can also reach it from <strong style="font-weight:600">Tools &rarr; Verify
+                              Download</strong>.
+                    </p>
+                    <p>Shrike does not ship with the release key, so the dialog reports <em>Missing verification
+                              key</em> until you choose <code>privkeyio-signing-key.asc</code> in its <strong
+                              style="font-weight:600">Public Key</strong> field. It then shows the file signed by Kyle
+                         Santiago, with the fingerprint below in its tooltip, and the installer ready to install.</p>
+                    <p>This works for a fresh download of a new version while your existing install stays untouched.</p>
+
+                    <h3>From the command line</h3>
+                    <p>You need <code>gpg</code>. It is preinstalled on most Linux systems; on macOS and Windows you
+                         will need to install GnuPG first.</p>
+                    <p>Put three files in the same folder as the installer you downloaded, all from the same release:
+                         <code>privkeyio-signing-key.asc</code>, <code>SHA256SUMS</code> and
+                         <code>SHA256SUMS.asc</code>. Then open a terminal in that folder, for example
+                         <code>cd ~/Downloads</code>.
+                    </p>
+                    <h4>Step 1. Import the signing key.</h4>
+                    <pre>gpg --import privkeyio-signing-key.asc</pre>
+                    <h4>Step 2. Check the signature on the checksum file.</h4>
+                    <pre>gpg --verify SHA256SUMS.asc SHA256SUMS</pre>
+                    <p>A successful check reports a good signature from the release key:</p>
+                    <pre>gpg: Signature made ...
+gpg:                using RSA key 100497C58727107D9B9DA0FAF160CC14F64F8EF8
+gpg: Good signature from "Kyle Santiago &lt;kyle@privkey.io&gt;" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: A47D 99B6 DB0D 715D 40C5  9A20 23AE 8A8E A7E2 4E38
+     Subkey fingerprint: 1004 97C5 8727 107D 9B9D  A0FA F160 CC14 F64F 8EF8</pre>
+                    <div class="note red"><b>What to check</b>
+                         <p><strong style="font-weight:600">Good signature</strong> means the file was signed by the
+                              holder of the key. Then check that the <code>Primary key fingerprint</code> line matches
+                              the fingerprint below. If you see <strong style="font-weight:600">BAD signature</strong>
+                              instead, stop and do not install anything.</p>
+                         <p>The <code>using RSA key</code> line shows the signing subkey, not the primary key, so it
+                              does not match the fingerprint below. That is expected. Releases from v2.5.5-blake2b.27 on
+                              are signed with the subkey <code>1004 97C5 8727 107D 9B9D A0FA F160 CC14 F64F 8EF8</code>,
+                              and earlier releases with the primary key directly.</p>
+                         <p>The warning about a trusted signature is normal. It only means you have not told your own
+                              gpg that you personally trust this key, which is true of any key you have just imported.
+                         </p>
+                    </div>
+                    <p>The release key belongs to Kyle Santiago &lt;kyle@privkey.io&gt;. Compare the fingerprint
+                         yourself:</p>
+                    <pre>A47D 99B6 DB0D 715D 40C5  9A20 23AE 8A8E A7E2 4E38</pre>
+                    <p>If gpg says <em>Can't check signature: No public key</em> even though you imported the key
+                         before, your copy predates the signing subkey. Import <code>privkeyio-signing-key.asc</code>
+                         from the current release again and gpg adds it.</p>
+                    <p><strong style="font-weight:600">Step 3. Check the installer against the checksums.</strong> Step
+                         2 only proved the checksum file is genuine. It said nothing about the installer, so now compare
+                         the two. The command depends on your system.</p>
+                    <p>Linux:</p>
+                    <pre>sha256sum --ignore-missing -c SHA256SUMS</pre>
+                    <p>macOS:</p>
+                    <pre>shasum -a 256 --ignore-missing -c SHA256SUMS</pre>
+                    <p>Windows, in PowerShell, then compare the result by eye against the matching line in
+                         <code>SHA256SUMS</code>:
+                    </p>
+                    <pre>Get-FileHash Shrike-&lt;version&gt;.msi -Algorithm SHA256</pre>
+                    <p>On Linux and macOS you want to see your file named with <code>OK</code> after it. Anything
+                         reporting <code>FAILED</code> means the file does not match what was signed: delete it and
+                         download again.</p>
+                    <div class="note red"><b>Unsigned installers</b>
+                         <p>The macOS builds are not notarized and the Windows installer is not Authenticode signed, so
+                              both are reported as untrusted on first launch. Verify <code>SHA256SUMS</code>
+                              <em>first</em>: clearing the macOS quarantine flag removes the check that would otherwise
+                              stop a tampered download.
+                         </p>
+                         <pre>xattr -dr com.apple.quarantine /Applications/Shrike.app</pre>
+                    </div>
+
+                    <h2 style="margin-top:50px">What else you need</h2>
+                    <p>A node that is up to date: <a
+                              href="https://github.com/bitcoinknots/bitcoin/releases/tag/v29.4.1.knots20260508"
+                              target="_blank" rel="noopener">Bitcoin Knots v29.4.1.knots20260508</a> or any later
+                         release, connected directly or behind your own Electrum server. Shrike ships with no public
+                         servers, because the ones it inherited from upstream stopped at the activation height. For an
+                         Electrum server, use a Fulcrum build with BLAKE2b support or the StartOS package; stock Fulcrum
+                         stops at the activation height. See <a href="docs/connect-node.html">connecting a node</a>.</p>
+                    <p>If you would rather follow along, Bitcoin University has a walkthrough of installing Shrike and
+                         pointing it at a node, covering Start9 and Umbrel. It is a community recording made before the
+                         current release.</p>
+
+                    <h2 style="margin-top:50px">Installing next to Sparrow</h2>
+                    <p>Shrike uses its own home folder, packages, desktop entries and bundle identifier, so it installs
+                         alongside an existing Sparrow without sharing or overwriting any of its state. Wallet files are
+                         not shared between the two.</p>
+               </div>
+          </div>
+     </main>
+     <footer>
+          <div class="wrap foot">
+               <p>Shrike has not been audited and comes with no warranty of any kind. It is an unofficial fork of
+                    Sparrow Bitcoin Wallet, licensed under the Apache 2.0 license, and is not affiliated with or
+                    endorsed by the Sparrow project.</p>
+               <nav aria-label="Footer"><a href="https://github.com/privkeyio/shrike" target="_blank"
+                         rel="noopener">GitHub</a><a href="https://github.com/privkeyio/shrike/releases/latest"
+                         target="_blank" rel="noopener">Releases</a><a href="https://github.com/privkeyio/shrike/issues"
+                         target="_blank" rel="noopener">Issues</a><a href="docs.html">Docs</a></nav>
+          </div>
+     </footer>
+     <script src="main.js"></script>
+</body>
+
+</html>

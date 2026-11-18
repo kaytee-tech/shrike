@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Documentation for Shrike: replay protection with SIGHASH_UNIFIED, connecting a Bitcoin Knots node or Electrum server, and building from source.">
+<title>Documentation: replay protection, nodes, building | Shrike</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+<a class="brand" href="index.html"><span class="logo"><!-- LOGO PLACEHOLDER: replace with <img src="assets/shrike-plate.png" alt=""> --><i class="ri-bird-fill"></i></span>Shrike</a>
+<nav class="links" aria-label="Main">
+<a href="features.html" data-nav="features">Features</a>
+<a href="download.html" data-nav="download">Download</a>
+<a href="docs.html" data-nav="docs">Docs</a>
+<a href="donate.html" data-nav="donate">Donate</a>
+<a href="https://github.com/privkeyio/shrike" target="_blank" rel="noopener">Source</a>
+</nav></div></header>
+<main>
+
+<div class="page"><div class="wrap">
+<span class="eyebrow">Docs</span>
+<h1>Shrike documentation</h1>
+<p style="max-width:880px">These pages cover what is specific to Shrike. For everything Shrike inherits unchanged from Sparrow, upstream's own documentation applies.</p>
+<div class="grid" style="margin-top:34px">
+<a class="card" href="docs/quick-start.html"><h3>Quick start</h3><p>From a fresh download to a first send: stand up a node, connect it, mark your signers, check the send screen.</p></a>
+<a class="card" href="docs/connect-node.html"><h3>Connecting a node</h3><p>Why the public servers are gone, and how to point Shrike at a Knots node or your own Electrum server.</p></a>
+<a class="card" href="docs/replay-protection.html"><h3>Replay protection</h3><p>What the opt-in signature hash does, how to mark a keystore, what a multisig quorum gets, and the Anyone Can Pay exception.</p></a>
+<a class="card" href="docs/firmware.html"><h3>Hardware wallet firmware</h3><p>Unofficial Coldcard, SeedSigner and Trezor builds that can sign with <code>SIGHASH_UNIFIED</code>, how to verify them, and what flashing one costs you.</p></a>
+<a class="card" href="docs/building.html"><h3>Building and running</h3><p>Recursive clone, Java and packaging requirements, running from source, command line options and the home folder.</p></a>
+<a class="card" href="docs/faq.html"><h3>FAQ</h3><p>Coins held across activation, using Shrike beside Sparrow, hardware wallet support, and where to report an issue.</p></a>
+</div>
+<div style="max-width:880px">
+<h2 id="from-sparrow" style="margin-top:64px">From Sparrow's documentation</h2>
+<p>Most of the wallet is upstream's work and behaves as it does there, so rather than restate it, <a href="https://sparrowwallet.com/docs/" target="_blank" rel="noopener">Sparrow's documentation</a> is worth reading alongside these pages. It covers wallet creation, hardware wallets, the transaction editor, airgapped workflows, privacy and server performance.</p>
+<p>Two differences run through all of it, so keep them in mind wherever you are reading:</p>
+<ul class="list">
+<li><strong style="font-weight:600">Shrike offers no public servers.</strong> Anywhere upstream assumes you can pick one, that option does not exist here. Your own node, or your own Electrum server in front of it, is the only arrangement. See <a href="docs/connect-node.html">connecting a node</a>.</li>
+<li><strong style="font-weight:600">Signing has to opt in.</strong> A device on stock firmware still signs, but produces signatures with no replay protection. See <a href="docs/replay-protection.html">replay protection</a> and <a href="docs/firmware.html">hardware wallet firmware</a>.</li>
+</ul>
+<h2 id="in-the-repository" style="margin-top:56px">In the repository</h2>
+<p>Some material is kept next to the code rather than here, because it is checked against the code on every change:</p>
+<ul class="list">
+<li><a href="https://github.com/privkeyio/shrike/blob/master/docs/reproducible.md" target="_blank" rel="noopener">Reproducing the release binaries</a></li>
+<li><a href="https://github.com/privkeyio/shrike/blob/master/docs/blake2b-regtest.md" target="_blank" rel="noopener">Verifying the proof of work against a live forked regtest node</a></li>
+<li><a href="https://github.com/privkeyio/shrike/blob/master/docs/unified-sighash-regtest.md" target="_blank" rel="noopener">Verifying the signature hash against a live forked regtest node</a></li>
+</ul>
+</div>
+</div></div>
+</main>
+<footer><div class="wrap foot">
+<p>Shrike has not been audited and comes with no warranty of any kind. It is an unofficial fork of Sparrow Bitcoin Wallet, licensed under the Apache 2.0 license, and is not affiliated with or endorsed by the Sparrow project.</p>
+<nav aria-label="Footer"><a href="https://github.com/privkeyio/shrike" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/privkeyio/shrike/releases/latest" target="_blank" rel="noopener">Releases</a><a href="https://github.com/privkeyio/shrike/issues" target="_blank" rel="noopener">Issues</a><a href="docs.html">Docs</a></nav>
+</div></footer>
+<script src="main.js"></script>
+</body>
+</html>
